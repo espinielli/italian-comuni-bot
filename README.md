@@ -6,7 +6,7 @@ A Twitter bot written in R, see https://twitter.com/italiancomuni for actual twe
 
 It tweets a map of an Italian comune together with its name, province, and region.
 
-![a tweeted map](comune_rater.jpg)
+![a tweeted map](comune_raster.jpg)
 
 
 Inspired by
