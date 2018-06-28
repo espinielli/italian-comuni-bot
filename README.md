@@ -4,6 +4,11 @@ Work in progress.
 
 A Twitter bot written in R, see https://twitter.com/italiancomuni for actual tweets.
 
+It tweets a map of an Italian comune together with its name, province, and region.
+
+![a tweeted map](https://github.com/espinielli/italian-comuni-bot/raw/master/comune_rater.jpg "a comune")
+
+
 Inspired by
 * [@everytract](https://twitter.com/everytract)
 * [@GVAcartografic](https://twitter.com/GVAcartografic)'s [#Secciócensal](https://twitter.com/hashtag/Secci%C3%B3censal?src=hash)
