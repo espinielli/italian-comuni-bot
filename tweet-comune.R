@@ -25,7 +25,7 @@ generate_google_map <- function(com, filename = "comune.jpg") {
 
   m <- get_map(location = centroid, zoom = z, maptype = "satellite")
   terrain <- ggmap(m)
-  com.sp.df <- com %>% as("Spatial") %>% fortify
+  com.sp.df <- com.sp %>% fortify
 
   #----------------------------------------------------------------
   # ggmap approach without cropping
@@ -76,7 +76,7 @@ generate_cropped_map <- function(com, filename = "comune_raster.jpg") {
 
   m <- get_map(location = centroid, zoom = z, maptype = "satellite")
   terrain <- ggmap(m)
-  com.sp.df <- com %>% as("Spatial") %>% fortify
+  com.sp.df <- com.sp %>% fortify
 
   #----------------------------------------------------------------
   # crop to boundary
