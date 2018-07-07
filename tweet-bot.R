@@ -31,4 +31,6 @@ credits <- ifelse((n %% 67) == 0,
                   "Sources @istat_it, @istat_en, @googlemaps.",
                   "")
 tweet_comune(com, n, msg = msg, credits = credits)
+about <- str_c("Tweeted about ", com$COMUNE, "; idx=", n)
+print(about)
 writeLines(text = as.character(n) , "last-tweeted.txt")
