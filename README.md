@@ -1,6 +1,6 @@
 # italian-comuni-bot
 
-Work in progress.
+** Work in progress. **
 
 A Twitter bot written in R, see https://twitter.com/italiancomuni for actual tweets.
 
@@ -15,6 +15,16 @@ Inspired by
 
 GIS data from ISTAT (Italian National Institute of Statistics),
 satellite maps from [Google Maps](https://www.google.com/maps).
+
+
+## How to run it
+
+From the command line it is enough to run the following command:
+
+    $ Rscript twitter-bot.R
+
+This will read the index in the file `last-tweeted.txt` and tweet the next
+one in the list or start over.
 
 
 ## ToDo's
