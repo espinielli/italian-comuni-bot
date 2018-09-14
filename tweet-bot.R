@@ -1,4 +1,14 @@
-library(tidyverse)
+has_internet <- function(){
+  !is.null(curl::nslookup("r-project.org", error = FALSE))
+}
+
+if (!has_internet()) stop("No internet connection!")
+
+
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(stringr)
 library(sf)
 library(ggmap)
 library(raster)
@@ -8,6 +18,7 @@ library(rtweet)
 
 source("map-utils.R")
 source("tweet-comune.R")
+
 
 coms <- readRDS("data/coms.rds")
 lc <- nrow(coms)
