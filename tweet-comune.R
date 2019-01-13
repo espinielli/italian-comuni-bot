@@ -1,6 +1,3 @@
-library(raster)
-library(rgdal)
-library(sf)
 
 generate_google_map <- function(com, filename = "comune.jpg") {
   com.sp <- as(com, "Spatial")
@@ -12,7 +9,7 @@ generate_google_map <- function(com, filename = "comune.jpg") {
     st_centroid() %>%
     st_transform(4326) %>%
     st_coordinates() %>%
-    as_data_frame() %>%
+    as_tibble() %>%
     `names<-`(c("lon", "lat"))
 
   mbb <- make_bbox(
@@ -51,8 +48,6 @@ generate_google_map <- function(com, filename = "comune.jpg") {
   ggsave("comune_ggmap.jpg", plot = pg)
 }
 
-
-
 generate_cropped_map <- function(com, filename = "comune_raster.jpg") {
   com.sp <- as(com, "Spatial")
 
@@ -63,7 +58,7 @@ generate_cropped_map <- function(com, filename = "comune_raster.jpg") {
     st_centroid() %>%
     st_transform(4326) %>%
     st_coordinates() %>%
-    as_data_frame() %>%
+    as_tibble() %>%
     `names<-`(c("lon", "lat"))
 
   mbb <- make_bbox(
@@ -128,7 +123,6 @@ generate_cropped_map <- function(com, filename = "comune_raster.jpg") {
   ggsave(filename, plot = pr)
 }
 
-
 tweet_authorize <- function() {
   # Consumer Key (API Key)
   italiancomuni_bot_api_key = Sys.getenv("italiancomuni_bot_api_key")
@@ -147,9 +141,7 @@ tweet_authorize <- function() {
     access_token = italiancomuni_bot_access_token,
     access_secret = italiancomuni_bot_access_token_secret
   )
-  twitter_token
 }
-
 
 tweet_comune <- function(com, n, msg = "", credits = "") {
   generate_cropped_map(com)

@@ -4,16 +4,15 @@ has_internet <- function(){
 
 if (!has_internet()) stop("No internet connection!")
 
-
-library(dplyr)
-library(ggplot2)
-library(readr)
-library(stringr)
-library(sf)
-library(ggmap)
-library(raster)
-library(rgdal)
-library(rtweet)
+suppressMessages(library(dplyr))
+suppressMessages(library(ggplot2))
+suppressMessages(library(readr))
+suppressMessages(library(stringr))
+suppressMessages(library(sf))
+suppressMessages(library(ggmap))
+suppressMessages(library(raster))
+suppressMessages(library(rgdal))
+suppressMessages(library(rtweet))
 
 
 source("map-utils.R")
@@ -24,6 +23,8 @@ coms <- readRDS("data/coms.rds")
 lc <- nrow(coms)
 
 tweet_authorize()
+register_google(key = Sys.getenv("google_maps_api_key"))
+
 
 # repeat every hour
 l <- read_file("last-tweeted.txt") %>% as.integer()
