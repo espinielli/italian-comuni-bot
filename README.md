@@ -21,7 +21,7 @@ satellite maps from [Google Maps](https://www.google.com/maps).
 
 From the command line it is enough to run the following command:
 
-    $ Rscript twitter-bot.R
+    $ Rscript tweet-bot.R
 
 This will read the index in the file `last-tweeted.txt` and tweet the next
 one in the list or start over.
