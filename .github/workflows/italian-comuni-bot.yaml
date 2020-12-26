@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: '41 * * * *'
+    - cron: '13 * * * *'
 
 name: italian-comuni-bot
 
@@ -30,7 +30,7 @@ jobs:
           R -e 'renv::restore()'
       - name: Tweet Italian Comuni Map
         run: |
-          Rscript rweet-bot.R
+          Rscript tweet-bot.R
       - name: store index of last tweeted comune
         run: |
           git config user.name github-actions
