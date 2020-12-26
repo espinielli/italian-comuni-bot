@@ -1,0 +1,40 @@
+on:
+  schedule:
+    - cron: '41 * * * *'
+
+name: italian-comuni-bot
+
+jobs:
+  post-tweet:
+    runs-on: macOS-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      ITALIANCOMUNI_BOT_API_KEY: ${{ secrets.ITALIANCOMUNI_BOT_API_KEY }}
+      ITALIANCOMUNI_BOT_API_KEY_SECRET: ${{ secrets.ITALIANCOMUNI_BOT_API_KEY_SECRET }}
+      ITALIANCOMUNI_BOT_ACCESS_TOKEN: ${{ secrets.ITALIANCOMUNI_BOT_ACCESS_TOKEN }}
+      ITALIANCOMUNI_BOT_ACCESS_TOKEN_SECRET: ${{ secrets.ITALIANCOMUNI_BOT_ACCESS_TOKEN_SECRET }}
+      ITALIANCOMUNI_BOT_GOOGLE_MAPS_API_KEY: ${{ secrets.ITALIANCOMUNI_BOT_GOOGLE_MAPS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup R
+        uses: r-lib/actions/setup-r@master
+      - name: Cache Renv packages
+        uses: actions/cache@v1
+        with:
+          path: $HOME/.local/share/renv
+          key: r-${{ hashFiles('renv.lock') }}
+          restore-keys: r-
+      - name: Install packages
+        run: |
+          R -e 'install.packages("renv")'
+          R -e 'renv::restore()'
+      - name: Tweet Italian Comuni Map
+        run: |
+          Rscript rweet-bot.R
+      - name: store index of last tweeted comune
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add 'last-tweeted.txt'
+          git commit -m "stored index of last tweeted map"
+          git push
