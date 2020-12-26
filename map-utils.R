@@ -27,7 +27,7 @@ calc_zoom <- function (lon, lat, data, adjust = 0, f = 0.05)
   else {
     lon <- data[, deparse(substitute(lon))]
     lat <- data[, deparse(substitute(lat))]
-    bbox <- make_bbox(lon, lat, f = f)
+    bbox <- ggmap::make_bbox(lon, lat, f = f)
     lon_range <- bbox[c("left", "right")]
     lat_range <- bbox[c("bottom", "top")]
   }
@@ -43,8 +43,8 @@ calc_zoom <- function (lon, lat, data, adjust = 0, f = 0.05)
 # from https://gis.stackexchange.com/a/155495/76173
 ggmap_rast <- function(map){
   map_bbox <- attr(map, 'bb')
-  .extent <- extent(as.numeric(map_bbox[c(2,4,1,3)]))
-  my_map <- raster(.extent, nrow= nrow(map), ncol = ncol(map))
+  .extent <- raster::extent(as.numeric(map_bbox[c(2,4,1,3)]))
+  my_map <- raster::raster(.extent, nrow= nrow(map), ncol = ncol(map))
   rgb_cols <- setNames(as.data.frame(t(col2rgb(map))), c('red','green','blue'))
   red <- my_map
   values(red) <- rgb_cols[['red']]
@@ -52,5 +52,5 @@ ggmap_rast <- function(map){
   values(green) <- rgb_cols[['green']]
   blue <- my_map
   values(blue) <- rgb_cols[['blue']]
-  stack(red,green,blue)
+  raster::stack(red,green,blue)
 }

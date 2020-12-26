@@ -23,7 +23,7 @@ coms <- readRDS("data/coms.rds")
 lc <- nrow(coms)
 
 tweet_authorize()
-register_google(key = Sys.getenv("google_maps_api_key"))
+register_google(key = Sys.getenv("ITALIANCOMUNI_BOT_GOOGLE_MAPS_API_KEY"))
 
 
 # repeat every hour
