@@ -9,7 +9,7 @@ jobs:
   post-tweet:
     runs-on: macOS-latest
     env:
-      RENV_PATHS_ROOT: ~/.local/share/renv
+      RENV_PATHS_ROOT: ~/Library/Application Support/renv
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       ITALIANCOMUNI_BOT_API_KEY: ${{ secrets.ITALIANCOMUNI_BOT_API_KEY }}
       ITALIANCOMUNI_BOT_API_KEY_SECRET: ${{ secrets.ITALIANCOMUNI_BOT_API_KEY_SECRET }}
@@ -21,7 +21,8 @@ jobs:
       - name: Setup R
         uses: r-lib/actions/setup-r@master
       - name: Cache Renv packages
-        uses: actions/cache@v1
+        uses: actions/cache@v2
+        if: startsWith(runner.os, 'macOS')
         with:
           path: ${{ env.RENV_PATHS_ROOT }}
           key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
