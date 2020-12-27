@@ -8,17 +8,19 @@ download_istat <- FALSE
 if (download_istat) {
   # download the relevant shapefile from ISTAT https://www.istat.it/it/archivio/124086
   #    http://www.istat.it/storage/cartografia/confini_amministrativi/archivio-confini/non_generalizzati/2016/Limiti_2016_WGS84.zip
+  # reviewed in 20201225:
+  # https://www.istat.it/storage/cartografia/confini_amministrativi/non_generalizzati/Limiti01012020.zip
 
   istat_base <- "http://www.istat.it/"
-  istat_storage <- "storage/cartografia/confini_amministrativi/archivio-confini/"
+  istat_storage <- "storage/cartografia/confini_amministrativi/"
   istat_type <- "non_generalizzati/"
   istat_year <- "2016"
-  istat_file <- str_glue("Limiti_{yyyy}_WGS84.zip", yyyy = istat_year)
-  istat_destination <- "data/" %>% str_c(istat_file)
+  istat_filename <- str_glue("Limiti0101{yyyy}.zip", yyyy = istat_year)
+  istat_destination <- "data/" %>% str_c(istat_filename)
 
   istat_file <- str_c(istat_base, istat_storage, istat_type) %>%
-    str_glue("{yyyy}/", yyyy = istat_year) %>%
-    str_c(istat_file)
+    # str_glue("{yyyy}/", yyyy = istat_year) %>%
+    str_c(istat_filename)
   download.file(istat_file, istat_destination)
   unzip(istat_destination, exdir = "data/cucu/")
 }
