@@ -110,7 +110,7 @@ generate_cropped_map <- function(com, filename = "comune_raster.jpg") {
   pr <- p +
     labs(x = "Longitude (WGS84)",
          y = "Latitude",
-         caption = "Sources: ISTAT (comuni), Google Maps (satellite)") +
+         caption = "Sources: ISTAT (comuni, 2016), Google Maps (satellite)") +
     ggtitle(
       label = str_glue("{comune} ({id})",
                        comune = com$COMUNE,
