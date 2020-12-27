@@ -1,6 +1,6 @@
 # Fixed to ggmap:calc_zoom
 # see https://github.com/dkahle/ggmap/pull/141
-calc_zoom <- function (lon, lat, data, adjust = 0, f = 0.05)
+calc_zoom_fix <- function (lon, lat, data, adjust = 0, f = 0.05)
 {
   if (!missing(adjust))
     stopifnot(is.integer(adjust))

@@ -18,7 +18,7 @@ generate_google_map <- function(com, filename = "comune.jpg") {
     f = 0.1
   )
 
-  z <- calc_zoom(mbb)
+  z <- calc_zoom_fix(mbb)
 
   m <- get_map(location = centroid, zoom = z, maptype = "satellite")
   terrain <- ggmap(m)
@@ -47,7 +47,7 @@ generate_google_map <- function(com, filename = "comune.jpg") {
 }
 
 generate_cropped_map <- function(com, filename = "comune_raster.jpg") {
-  com.sp <- as(com, "Spatial")
+  com.sp <- as_Spatial(com)
 
   bb <- com$bb[[1]]
   # centroid
@@ -59,20 +59,23 @@ generate_cropped_map <- function(com, filename = "comune_raster.jpg") {
     as_tibble() %>%
     `names<-`(c("lon", "lat"))
 
-  mbb <- ggmap::make_bbox(
+  mbb <- make_bbox(
     lon = c(bb["xmin"], bb["xmax"]),
     lat = c(bb["ymin"], bb["ymax"]),
     f = 0.1
   )
 
-  z <- calc_zoom(mbb)
+  z <- calc_zoom_fix(mbb)
 
   m <- ggmap::get_map(location = centroid, zoom = z, maptype = "satellite")
   terrain <- ggmap::ggmap(m)
-  com.sp.df <- com.sp %>% fortify
+  com.sp.df <- com.sp %>% fortify()
 
   # crop to boundary
   m.rast <- ggmap_rast(map = m)
+  # double it: sometimes it fails with:
+  #    Error in (function (x)  : attempt to apply non-function
+  com.only <- raster::mask(m.rast, com.sp)
   com.only <- raster::mask(m.rast, com.sp)
   cc <- c(mbb["left"] + (mbb["right"] - mbb["left"]) / 2,
           mbb["bottom"] + (mbb["top"] - mbb["bottom"]) / 2) %>%
