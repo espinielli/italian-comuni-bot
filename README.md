@@ -8,13 +8,18 @@ It tweets a map of an Italian comune together with its name, province, and regio
 
 ![a tweeted map](comune_raster.jpg)
 
+## Credits
+* Inspired by
+  - [@everytract](https://twitter.com/everytract)
+  - [@GVAcartografic](https://twitter.com/GVAcartografic)'s [#Secciócensal](https://twitter.com/hashtag/Secci%C3%B3censal?src=hash)
 
-Inspired by
-* [@everytract](https://twitter.com/everytract)
-* [@GVAcartografic](https://twitter.com/GVAcartografic)'s [#Secciócensal](https://twitter.com/hashtag/Secci%C3%B3censal?src=hash)
+* Automation:
+  - GitHub Actions as per @mattdray's [blog post](https://www.rostrum.blog/2020/09/21/londonmapbot/).
+  - {rtweet} package
 
-GIS data from ISTAT (Italian National Institute of Statistics),
-satellite maps from [Google Maps](https://www.google.com/maps).
+* sources:
+  - GIS data from ISTAT (Italian National Institute of Statistics)
+  - satellite maps from [Google Maps](https://www.google.com/maps).
 
 
 ## How to run it
