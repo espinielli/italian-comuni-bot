@@ -14,7 +14,6 @@ suppressMessages(library(raster))
 suppressMessages(library(rgdal))
 suppressMessages(library(rtweet))
 suppressMessages(library(patchwork))
-suppressMessages(library(rnaturalearth))
 
 authorize_apps <- function() {
   # Consumer Key (API Key)
@@ -186,7 +185,8 @@ generate_cropped_map <- function(com) {
 }
 generate_media <- function(com, filename = "comune_raster.jpg") {
   p1 <- generate_cropped_map(com)
-  italy <- ne_countries(country = 'italy', scale = 'medium', returnclass = 'sf')
+  # italy <- ne_countries(country = 'italy', scale = 'medium', returnclass = 'sf')
+  italy <- sf::st_read("italy.geojson")
   bbox_comune <- com$bb %>%
     unlist %>%
     st_bbox() %>%
