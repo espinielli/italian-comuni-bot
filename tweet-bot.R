@@ -225,6 +225,6 @@ tweet_comune <- function(com) {
 authorize_apps()
 com <- next_comune()
 tweet_comune(com)
-about <- str_c("Tweeted about ", com$COMUNE, "; idx=", n)
+about <- str_c("Tweeted about ", com$COMUNE, "; idx=", com$idx)
 print(about)
-writeLines(text = as.character(n) , "last-tweeted.txt")
+writeLines(text = as.character(com$idx) , "last-tweeted.txt")
