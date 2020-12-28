@@ -39,7 +39,7 @@ authorize_apps <- function() {
 next_comune <- function(lc) {
   coms <- readRDS("data/coms.rds")
   lc <- nrow(coms)
-  l <- read_file("last-tweeted.txt") %>% as.integer()
+  l <- read_file("data/last-tweeted.txt") %>% as.integer()
   n <- (l + 1) %% lc
 
   msg <- ifelse((n %% 19) == 0,
@@ -186,7 +186,7 @@ generate_cropped_map <- function(com) {
 generate_media <- function(com, filename = "comune_raster.jpg") {
   p1 <- generate_cropped_map(com)
   # italy <- ne_countries(country = 'italy', scale = 'medium', returnclass = 'sf')
-  italy <- sf::st_read("italy.geojson")
+  italy <- sf::st_read("data/italy.geojson")
   bbox_comune <- com$bb %>%
     unlist %>%
     st_bbox() %>%
@@ -207,7 +207,7 @@ generate_media <- function(com, filename = "comune_raster.jpg") {
 }
 
 tweet_comune <- function(com) {
-  fn <- "comune_raster.jpg"
+  fn <- "data/comune_raster.jpg"
   generate_media(com, filename = fn)
   # Twitter bot
   sts <- stringr::str_glue(
@@ -227,4 +227,4 @@ com <- next_comune()
 tweet_comune(com)
 about <- str_c("Tweeted about ", com$COMUNE, "; idx=", com$idx)
 print(about)
-writeLines(text = as.character(com$idx) , "last-tweeted.txt")
+writeLines(text = as.character(com$idx) , "data/last-tweeted.txt")
