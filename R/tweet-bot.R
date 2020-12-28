@@ -195,7 +195,7 @@ generate_media <- function(com, filename = "comune_raster.jpg") {
 
   p2 <- ggplot() +
     geom_sf(data = italy, fill = "white", colour = "gray77") +
-    geom_sf(data = bbox_comune, fill = NA, color = "red", size = 1.5) +
+    geom_sf(data = bbox_comune, fill = NA, color = "red", size = 0.8) +
     theme_void()
   p <- p1 +
     inset_element(p2,
@@ -205,7 +205,6 @@ generate_media <- function(com, filename = "comune_raster.jpg") {
 
   ggsave(filename, plot = p)
 }
-
 tweet_comune <- function(com) {
   fn <- "data/comune_raster.jpg"
   generate_media(com, filename = fn)
