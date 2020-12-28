@@ -35,11 +35,11 @@ jobs:
           renv::restore()
       - name: Tweet Italian Comuni Map
         run: |
-          Rscript tweet-bot.R
+          Rscript R/tweet-bot.R
       - name: store index of last tweeted comune
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add 'last-tweeted.txt'
+          git add 'data/last-tweeted.txt'
           git commit -m "stored index of last tweeted map"
           git push
