@@ -4,6 +4,7 @@ has_internet <- function(){
 
 if (!has_internet()) stop("No internet connection!")
 
+suppressMessages(library(here))
 suppressMessages(library(dplyr))
 suppressMessages(library(ggplot2))
 suppressMessages(library(readr))
@@ -37,9 +38,9 @@ authorize_apps <- function() {
   register_google(key = Sys.getenv("ITALIANCOMUNI_BOT_GOOGLE_MAPS_API_KEY"))
 }
 next_comune <- function(lc) {
-  coms <- readRDS("data/coms.rds")
+  coms <- readRDS(here::here("data", "coms.rds"))
   lc <- nrow(coms)
-  l <- read_file("data/last-tweeted.txt") %>% as.integer()
+  l <- read_file(here::here("data", "last-tweeted.txt")) %>% as.integer()
   n <- (l + 1) %% lc
 
   msg <- ifelse((n %% 19) == 0,
@@ -186,7 +187,7 @@ generate_cropped_map <- function(com) {
 generate_media <- function(com, filename = "comune_raster.jpg") {
   p1 <- generate_cropped_map(com)
   # italy <- ne_countries(country = 'italy', scale = 'medium', returnclass = 'sf')
-  italy <- sf::st_read("data/italy.geojson")
+  italy <- sf::st_read(here::here("data", "italy.geojson"))
   bbox_comune <- com$bb %>%
     unlist %>%
     st_bbox() %>%
@@ -206,7 +207,7 @@ generate_media <- function(com, filename = "comune_raster.jpg") {
   ggsave(filename, plot = p)
 }
 tweet_comune <- function(com) {
-  fn <- "data/comune_raster.jpg"
+  fn <- here::here("data", "comune_raster.jpg")
   generate_media(com, filename = fn)
   # Twitter bot
   sts <- stringr::str_glue(
@@ -216,8 +217,7 @@ tweet_comune <- function(com) {
     provreg = stringr::str_c(com$DEN_CMPRO, com$REGIONE, sep = ", "),
     msg = com$msg,
     credits = com$credits)
-  rtweet::post_tweet(status = sts,
-                     media = normalizePath(fn))
+  rtweet::post_tweet(status = sts, media = fn)
 }
 
 
@@ -226,4 +226,4 @@ com <- next_comune()
 tweet_comune(com)
 about <- str_c("Tweeted about ", com$COMUNE, "; idx=", com$idx)
 print(about)
-writeLines(text = as.character(com$idx) , "data/last-tweeted.txt")
+writeLines(text = as.character(com$idx) , here::here("data", "last-tweeted.txt"))
