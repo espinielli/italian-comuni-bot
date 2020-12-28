@@ -1,8 +1,8 @@
-has_internet <- function(){
-  !is.null(curl::nslookup("r-project.org", error = FALSE))
-}
-
-if (!has_internet()) stop("No internet connection!")
+# has_internet <- function(){
+#   !is.null(curl::nslookup("r-project.org", error = FALSE))
+# }
+#
+# if (!has_internet()) stop("No internet connection!")
 
 suppressMessages(library(here))
 suppressMessages(library(dplyr))
@@ -37,7 +37,7 @@ authorize_apps <- function() {
   # Google MAPS
   register_google(key = Sys.getenv("ITALIANCOMUNI_BOT_GOOGLE_MAPS_API_KEY"))
 }
-next_comune <- function(lc) {
+next_comune <- function() {
   coms <- readRDS(here::here("data", "coms.rds"))
   lc <- nrow(coms)
   l <- read_file(here::here("data", "last-tweeted.txt")) %>% as.integer()
@@ -109,6 +109,33 @@ ggmap_rast <- function(map){
   values(blue) <- rgb_cols[['blue']]
   raster::stack(red,green,blue)
 }
+generate_inset <- function(com) {
+  # italy <- ne_countries(country = 'italy', scale = 'medium', returnclass = 'sf')
+  italy <- sf::st_read(here::here("data", "italy.geojson"))
+  region <- sf::st_read(here::here("data", "regions2016.geojson")) %>%
+    filter(COD_REG == com$COD_REG)
+  bbox_comune <- com$bb %>%
+    unlist %>%
+    st_bbox() %>%
+    st_as_sfc() %>%
+    st_set_crs(4326)
+
+  centroid <- com %>%
+    sf::st_transform(23032) %>%
+    sf::st_centroid() %>%
+    sf::st_transform(4326) %>%
+    sf::st_coordinates() %>%
+    as_tibble() %>%
+    `names<-`(c("lon", "lat"))
+
+  g <- ggplot() +
+    geom_sf(data = italy, fill = "white", colour = "gray77") +
+    geom_sf(data = region, fill = "gray88", colour = "gray44", size = 0.1) +
+    geom_sf(data = bbox_comune, fill = "red", color = "black", size = 0.1) +
+    geom_point(data = centroid, aes(x = lon, y = lat)) +
+    theme_void()
+  g
+}
 generate_cropped_map <- function(com) {
   com.sp <- as_Spatial(com)
 
@@ -138,7 +165,6 @@ generate_cropped_map <- function(com) {
   m.rast <- ggmap_rast(map = m)
   # double it: sometimes it fails with:
   #    Error in (function (x)  : attempt to apply non-function
-  com.only <- raster::mask(m.rast, com.sp)
   com.only <- raster::mask(m.rast, com.sp)
   cc <- c(mbb["left"] + (mbb["right"] - mbb["left"]) / 2,
           mbb["bottom"] + (mbb["top"] - mbb["bottom"]) / 2) %>%
@@ -186,18 +212,7 @@ generate_cropped_map <- function(com) {
 }
 generate_media <- function(com, filename = "comune_raster.jpg") {
   p1 <- generate_cropped_map(com)
-  # italy <- ne_countries(country = 'italy', scale = 'medium', returnclass = 'sf')
-  italy <- sf::st_read(here::here("data", "italy.geojson"))
-  bbox_comune <- com$bb %>%
-    unlist %>%
-    st_bbox() %>%
-    st_as_sfc() %>%
-    st_set_crs(4326)
-
-  p2 <- ggplot() +
-    geom_sf(data = italy, fill = "white", colour = "gray77") +
-    geom_sf(data = bbox_comune, fill = NA, color = "red", size = 0.8) +
-    theme_void()
+  p2 <- generate_inset(com)
   p <- p1 +
     inset_element(p2,
                   left  = 0, bottom = 0,
