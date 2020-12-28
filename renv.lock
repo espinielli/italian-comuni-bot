@@ -478,6 +478,13 @@
       "Repository": "CRAN",
       "Hash": "a399e4773075fc2375b71f45fca186c4"
     },
+    "patchwork": {
+      "Package": "patchwork",
+      "Version": "1.1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c446b30cb33ec125ff02588b60660ccb"
+    },
     "pillar": {
       "Package": "pillar",
       "Version": "1.4.7",
@@ -645,6 +652,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "bc4bac38960b446c183957bfd563e763"
+    },
+    "rnaturalearth": {
+      "Package": "rnaturalearth",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "946d1b43d7aba91dfa804f02302a5125"
     },
     "rprojroot": {
       "Package": "rprojroot",

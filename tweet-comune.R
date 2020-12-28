@@ -143,7 +143,7 @@ tweet_authorize <- function() {
   )
 }
 
-tweet_comune <- function(com, n, msg = "", credits = "") {
+tweet_comune <- function(com) {
   generate_cropped_map(com)
 
   # Twitter bot
@@ -151,8 +151,8 @@ tweet_comune <- function(com, n, msg = "", credits = "") {
                   comune = com$COMUNE,
                   id = stringr::str_pad(com$PRO_COM, 6, pad = "0"),
                   provreg = stringr::str_c(com$DEN_CMPRO, com$REGIONE, sep = ", "),
-                  txt = msg,
-                  credits = credits)
+                  txt = com$msg,
+                  credits = com$credits)
   rtweet::post_tweet(status = sts,
              media = normalizePath("comune_raster.jpg"))
 }
