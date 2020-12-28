@@ -37,11 +37,13 @@ authorize_apps <- function() {
   # Google MAPS
   register_google(key = Sys.getenv("ITALIANCOMUNI_BOT_GOOGLE_MAPS_API_KEY"))
 }
-next_comune <- function() {
+next_comune <- function(n = NULL) {
   coms <- readRDS(here::here("data", "coms.rds"))
-  lc <- nrow(coms)
-  l <- read_file(here::here("data", "last-tweeted.txt")) %>% as.integer()
-  n <- (l + 1) %% lc
+  if (is.null(n)) {
+    lc <- nrow(coms)
+    l <- read_file(here::here("data", "last-tweeted.txt")) %>% as.integer()
+    n <- (l + 1) %% lc
+  }
 
   msg <- ifelse((n %% 19) == 0,
                 "Done in #rstats using #ggplot2, #rspatial, #ggmap and #rtweet.",
@@ -132,7 +134,7 @@ generate_inset <- function(com) {
     geom_sf(data = italy, fill = "white", colour = "gray77") +
     geom_sf(data = region, fill = "gray88", colour = "gray44", size = 0.1) +
     geom_sf(data = bbox_comune, fill = "red", color = "black", size = 0.1) +
-    geom_point(data = centroid, aes(x = lon, y = lat)) +
+    geom_point(data = centroid, aes(x = lon, y = lat), size = 0.5) +
     theme_void()
   g
 }
